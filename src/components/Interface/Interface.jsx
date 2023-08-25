@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import "./Interface.css";
+import { FaUser, FaLock, FaThumbsUp, FaHeart, FaSurprise } from 'react-icons/fa';
+
+
 //axios, fetch, promize
 
 const Interface = () => {
@@ -50,9 +53,15 @@ const Interface = () => {
                     <div className="post" key={index}>
                         <p>{post.content}</p>
                         <div className="reactions">
-                            <button onClick={() => handleReaction(index, 'like')}>Like ({post.reactions.like})</button>
-                            <button onClick={() => handleReaction(index, 'love')}>Love ({post.reactions.love})</button>
-                            <button onClick={() => handleReaction(index, 'wow')}>Wow ({post.reactions.wow})</button>
+                            <button onClick={() => handleReaction(index, 'like')}>
+                                <FaThumbsUp /> ({post.reactions.like})
+                            </button>
+                            <button onClick={() => handleReaction(index, 'love')}>
+                                <FaHeart /> ({post.reactions.love})
+                            </button>
+                            <button onClick={() => handleReaction(index, 'wow')}>
+                                <FaSurprise /> ({post.reactions.wow})
+                            </button>
                         </div>
                         <div className="comments">
                             {post.comments.map((comment, commentIndex) => (
