@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./Interface.css";
-import { FaUser, FaLock, FaThumbsUp, FaHeart, FaSurprise } from 'react-icons/fa';
+import { FaThumbsUp, FaHeart, FaSurprise } from 'react-icons/fa';
 
 
 //axios, fetch, promize
