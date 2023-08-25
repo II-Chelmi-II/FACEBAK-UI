@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
   const [logType, setLogType] = useState('signIn');
 
   const toSignUp = () => {
@@ -14,6 +16,7 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
+    navigate('/Interface/Interface');
   };
 
   return (
