@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function Login() {
+function Login({userSession, setUserSession}) {
+
   const navigate = useNavigate();
   const [logType, setLogType] = useState('signIn');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailRequired, setEmailRequired] = useState(false);
   const [usernameRequired, setUsernameRequired] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
+  const [signupEmailRequired, setSignupEmailRequired] = useState(false);
   const [signupUsernameRequired, setSignupUsernameRequired] = useState(false);
   const [signupPasswordRequired, setSignupPasswordRequired] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,9 +31,22 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const userLog = {
+      username,
+      email,
+      password,
+      joinedAt: new Date(),
+      bio: "",
+      photo: ""
+    }
+    const userLocal = JSON.parse(localStorage.getItem('userLocal'));
     if (username !== '' && password !== '') {
-      navigate('/Interface/Interface');
+      if (userLocal.username === userLog.username && userLocal.email === userLog.email && userLocal.password === userLog.password) {
+        navigate('/Interface/Interface');
+        setUserSession(userLog);
+      }
     } else {
+      setEmailRequired(email === '');
       setUsernameRequired(username === '');
       setPasswordRequired(password === '');
     }
@@ -37,9 +55,30 @@ function Login() {
   const handleSignupSubmit = (e) => {
     e.preventDefault();
 
-    if (username !== '' && password !== '' && confirmPassword !== '' && passwordsMatch) {
-      navigate('/Interface/Interface');
+    const user = {
+      email,
+      confirmPassword,
+      password,
+      username,
+      joinedAt: new Date(),
+      bio: "",
+      photo: ""
+    };
+
+    if (email !== '' && username !== '' && password !== '' && confirmPassword !== '' && passwordsMatch) {
+      // Envoie la requête POST pour insérer l'utilisateur
+      axios.post('http://[::1]:8080/users', user)
+        .then(response => {
+          console.log('User inserted', response.data);
+          localStorage.setItem('userLocal', JSON.stringify(user));
+          setUserSession(user)
+          navigate('/Interface/Interface');
+        })
+        .catch(error => {
+          console.error('User not inserted', error);
+        });
     } else {
+      setSignupEmailRequired(email === '');
       setSignupUsernameRequired(username === '');
       setSignupPasswordRequired(password === '');
       setConfirmPasswordRequired(confirmPassword === '');
@@ -49,7 +88,6 @@ function Login() {
   useEffect(() => {
     setPasswordsMatch(password === confirmPassword);
   }, [password, confirmPassword]);
-
   return (
     <div className="main">
       <div className="login">
@@ -65,6 +103,16 @@ function Login() {
               className={usernameRequired ? 'required' : ''}
             />
             {usernameRequired && <span className="required-text">Required</span>}
+
+            <input
+              type="text"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={emailRequired ? 'required' : ''}
+            />
+            {emailRequired && <span className="required-text">Required</span>}
+
             <input
               type="password"
               placeholder="Password"
@@ -86,6 +134,15 @@ function Login() {
         ) : (
           <>
             <h2>SIGN UP</h2>
+            <input
+              type="text"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={signupEmailRequired ? 'required' : ''}
+            />
+            {signupEmailRequired && <span className="required-text">Required</span>}
+
             <input
               type="text"
               placeholder="Enter an username"

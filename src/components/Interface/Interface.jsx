@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import "./Interface.css";
 import { FaThumbsUp, FaHeart, FaSurprise } from 'react-icons/fa';
+import Profil from './Profil/Profil';
 
 
-//axios, fetch, promize
-
-const Interface = () => {
+/* const Interface = () => {
     const [posts, setPosts] = useState([]);
     const [newPost, setNewPost] = useState('');
 
@@ -84,5 +83,13 @@ const Interface = () => {
         </div>
     );
 };
+*/
+
+const Interface = ({userSession, setUserSession}) => {
+    return (
+        <Profil userSession={userSession} setUserSession={setUserSession} />
+    )
+   
+}
 
 export default Interface;
