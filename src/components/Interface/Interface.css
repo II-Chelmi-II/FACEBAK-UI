@@ -77,3 +77,16 @@ button:hover {
     margin-top: 5px;
     resize: none;
 }
+
+.interface{
+    display: flex;
+    justify-content: space-between;
+}
+
+.actu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+}

@@ -3,7 +3,7 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Login({userSession, setUserSession}) {
+function Login({ userSession, setUserSession }) {
 
   const navigate = useNavigate();
   const [logType, setLogType] = useState('signIn');
@@ -28,29 +28,34 @@ function Login({userSession, setUserSession}) {
     setLogType('signIn');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.put('http://[::1]:8080/users', {
+        username,
+        email,
+        password
+      });
 
-    const userLog = {
-      username,
-      email,
-      password,
-      joinedAt: new Date(),
-      bio: "",
-      photo: ""
+      console.log('User connected', response.data);
+
+      const user = response.data;
+
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('username', username);
+      localStorage.setItem('userBio', '');
+
+      // Met à jour userSession dans le composant
+      localStorage.setItem('user', JSON.stringify(user))
+      setUserSession(user);
+      console.log(JSON.parse(localStorage.getItem('user')));
+
+      navigate('/Interface/Interface');
+    } catch (error) {
+      console.log('Login error:', error);
     }
-    const userLocal = JSON.parse(localStorage.getItem('userLocal'));
-    if (username !== '' && password !== '') {
-      if (userLocal.username === userLog.username && userLocal.email === userLog.email && userLocal.password === userLog.password) {
-        navigate('/Interface/Interface');
-        setUserSession(userLog);
-      }
-    } else {
-      setEmailRequired(email === '');
-      setUsernameRequired(username === '');
-      setPasswordRequired(password === '');
-    }
-  };
+  }
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
@@ -69,12 +74,16 @@ function Login({userSession, setUserSession}) {
       // Envoie la requête POST pour insérer l'utilisateur
       axios.post('http://[::1]:8080/users', user)
         .then(response => {
+          alert('Account created');
           console.log('User inserted', response.data);
-          localStorage.setItem('userLocal', JSON.stringify(user));
-          setUserSession(user)
+
+          // Met à jour userSession dans le composant
+          setUserSession(user);
+
           navigate('/Interface/Interface');
         })
         .catch(error => {
+          alert('Fail, please fill the filed right')
           console.error('User not inserted', error);
         });
     } else {
@@ -84,6 +93,7 @@ function Login({userSession, setUserSession}) {
       setConfirmPasswordRequired(confirmPassword === '');
     }
   };
+
 
   useEffect(() => {
     setPasswordsMatch(password === confirmPassword);
