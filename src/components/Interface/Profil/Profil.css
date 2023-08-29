@@ -1,8 +1,67 @@
-.profil{
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    height: 100vh;
-    background-color: brown;
-    position: fixed;
+/* Style for the profile container */
+.profil {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Styling for the profile's heading */
+.profil h1 {
+    color: #ff6600;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+/* Styling for the secondary heading */
+.profil h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Styling for the bio section */
+.profil div {
+    margin-top: 15px;
+    color: #666;
+}
+
+.profil div span {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Styling for the edit icon */
+.profil div .FaEdit {
+    color: #0099cc;
+    cursor: pointer;
+}
+
+/* Styling for the prompt container */
+.profil .prompt {
+    margin-top: 15px;
+}
+
+/* Styling for the input field */
+.profil .prompt input {
+    width: 90%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Styling for the edit button */
+.profil .prompt button {
+    background-color: #0099cc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Hover effect for the edit button */
+.profil .prompt button:hover {
+    background-color: #0077aa;
 }

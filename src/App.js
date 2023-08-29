@@ -9,7 +9,11 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [userSession, setUserSession] = useState(localStorage.getItem('user'));
-  const [posts, setposts] = useState([]);
+  const [posts, setposts] = useState(JSON.parse(localStorage.getItem('posts')));
+
+  useEffect(()=>{
+    localStorage.setItem('posts', JSON.stringify(posts));
+  },[posts])
 
   return (
     <Router>
